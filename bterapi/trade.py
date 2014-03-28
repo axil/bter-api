@@ -111,6 +111,11 @@ class TradeAPI(object):
                             connection=connection, error_handler=error_handler)
         return OrderItem(order_id, result)
            
+    def getOrderList(self, connection=None, error_handler=None):
+        result = self._post('orderlist', params={},
+                            connection=connection, error_handler=error_handler)
+        return result
+    
     def placeOrder(self, pair, trade_type, rate, amount, connection=None, update_delay=None, error_handler=None):
         common.validatePair(pair)
         if trade_type.lower() not in ("buy", "sell"):

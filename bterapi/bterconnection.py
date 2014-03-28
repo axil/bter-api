@@ -1,3 +1,4 @@
+import sys
 import httplib
 import json
 import decimal
@@ -22,6 +23,9 @@ class BTERConnection:
 
     def makeJSONRequest(self, url, method='POST', extra_headers=None, params=""):
         response = self.makeRequest(url, method, extra_headers, params)
+        if response == '\nwaiting for db':
+            sys.stdout.write('\nwaiting for db, retrying')
+            response = self.makeRequest(url, method, extra_headers, params)
         return parseJSONResponse(response)
 
 def parseJSONResponse(response):

@@ -1,12 +1,19 @@
 # Copyright (c) 2013 Alan McIntyre
 
 import decimal
-from bterconnection import BTERConnection, parseJSONResponse
+from bterconnection import BTERConnection, parseJSONResponse, WaitingForDB
 
 #decimal.getcontext().rounding = decimal.ROUND_DOWN
 exps = [decimal.Decimal("1e-%d" % i) for i in range(16)]
 
-all_pairs = BTERConnection().makeJSONRequest("/api/1/pairs", method="GET")
+for i in xrange(7):
+    try:
+        all_pairs = BTERConnection().makeJSONRequest("/api/1/pairs", method="GET")
+        break
+    except WaitingForDB:
+        pass
+else:
+    raise Exception('Cannot fetch pairs list after 7 attempts')
 
 all_currencies = list(set(sum([p.split('_') for p in all_pairs], [])))
 

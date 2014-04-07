@@ -3,6 +3,9 @@ import httplib
 import json
 import decimal
 
+class WaitingForDB(Exception):
+    pass
+
 class BTERConnection:
     domain = 'data.bter.com'
     def __init__(self, timeout=30):
@@ -23,9 +26,8 @@ class BTERConnection:
 
     def makeJSONRequest(self, url, method='POST', extra_headers=None, params=""):
         response = self.makeRequest(url, method, extra_headers, params)
-        if response == '\nwaiting for db':
-            sys.stdout.write('\nwaiting for db, retrying')
-            response = self.makeRequest(url, method, extra_headers, params)
+        if response.startswith('\nreloading'):
+            raise WaitingForDB()
         return parseJSONResponse(response)
 
 def parseJSONResponse(response):

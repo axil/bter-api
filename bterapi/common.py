@@ -3,7 +3,7 @@
 import decimal
 from bterconnection import BTERConnection, parseJSONResponse
 
-decimal.getcontext().rounding = decimal.ROUND_DOWN
+#decimal.getcontext().rounding = decimal.ROUND_DOWN
 exps = [decimal.Decimal("1e-%d" % i) for i in range(16)]
 
 all_pairs = BTERConnection().makeJSONRequest("/api/1/pairs", method="GET")

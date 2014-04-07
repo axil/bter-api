@@ -15,7 +15,7 @@ for i in xrange(7):
 else:
     raise Exception('Cannot fetch pairs list after 7 attempts')
 
-all_currencies = list(set(sum([p.split('_') for p in all_pairs], [])))
+all_currencies = list(set(sum([p.split('_') for p in all_pairs], []))) #+ ['btr']
 
 max_digits = dict((pair, {"price": 8, "amount": 8}) for pair in all_pairs)
 
